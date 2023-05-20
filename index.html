@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html style="color:white;background-color: black; color: white; font-family:Arial, Helvetica, sans-serif, Times, serif;">
+<head>
+  <title>Signup</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width = device - width, initial-scale = 1.0">
+    <style>
+        .card {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 400px;
+        margin-bottom: 10px;
+        display: flex;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        padding-left: 8px;
+        }
+        .container {
+        display: flex;
+        }
+    
+        .box {
+        width: 450px;
+        height: 30px;
+        border-radius: 5px;
+        background: none;
+        margin-right: 10px;
+        border: 1px solid white;
+        }
+    </style>
+</head>
+<body>
+  <p>Filter ui cards via their profession.</p>
+  <br><br>
+  <div>
+    <select id="profession" style="background: none; border: 1px solid white; padding: 10px; color: white;">
+      <option value="" style="color: black;">Profession</option>
+      <option value="Developer" style="color: black;">Developer</option>
+      <option value="Admin" style="color: black;">Admin</option>
+    </select>
+  </div><br><br>
+
+  <div id="userList" style="background: none;">
+
+  </div>
+  <br><br>
+  <button onclick="filterCards()" style="padding-right: 53px;padding-left: 53px; padding-top: 10px; padding-bottom: 10px; border: 1px solid white;">Filter</button>
+
+  <br><br><br>
+  <p>Add a new user</p>
+  
+  <div class="container">
+    <section>
+        <label for="name">Enter Name</label><br><br>
+        <input class="box" type="text" id="name" style="color:white;margin-right: 60px;border: 1px solid white; border-radius: 5px; background: none;">
+    </section>
+
+    <section>
+        <label for="profession">Enter Profession</label><br><br>
+        <input class="box" type="text" id="professionInput" style="color:white;margin-right: 60px;border: 1px solid white; border-radius: 5px; background: none;">
+    </section>
+
+    <section>
+        <label for="age">Enter Age</label><br><br>
+        <input class="box" type="text" id="age" style="color:white;border: 1px solid white; border-radius: 5px; background: none;">
+    </section>
+  </div>
+  <br><br>
+  <button onclick="addUser()" style="padding-right: 40px;padding-left: 40px; padding-top: 10px; padding-bottom: 10px; border: 1px solid white;">Add User</button>
+
+  <script>
+    const users = [
+      { id: 1, name: "John", profession: "Developer", age: "18" },
+      { id: 2, name: "Jack", profession: "Developer" , age: "20"},
+      { id: 3, name: "Karen", profession: "Admin" , age: "19"}
+    ];
+    
+    function renderUsers() 
+    {
+      const userList = document.getElementById("userList");
+      userList.innerHTML = "";
+      
+      users.forEach(user => 
+      {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+            ${user.id}.&nbsp&nbsp&nbsp&nbsp
+            Name: ${user.name}&nbsp&nbsp&nbsp&nbsp
+            Profession: ${user.profession}&nbsp&nbsp&nbsp&nbsp
+            Age: ${user.age}
+        `;
+        
+        userList.appendChild(card);
+      });
+    }
+    
+    function filterCards() 
+    {
+      const professionSelect = document.getElementById("profession");
+      const selectedProfession = professionSelect.value;
+      
+      if (selectedProfession === "") 
+      {
+        alert("Please select a profession before clicking the button.");
+        return;
+      }
+      
+      const filteredUsers = users.filter(user => user.profession === selectedProfession);
+      renderFilteredUsers(filteredUsers);
+    }
+    
+    function renderFilteredUsers(filteredUsers) 
+    {
+      const userList = document.getElementById("userList");
+      userList.innerHTML = "";
+      
+      filteredUsers.forEach(user => 
+      {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          ${user.id}.&nbsp;&nbsp&nbsp;&nbsp
+          Name: ${user.name}&nbsp;&nbsp&nbsp;&nbsp
+          Age: ${user.age}  &nbsp;&nbsp&nbsp;&nbsp
+          Profession: ${user.profession}
+        `;
+        
+        userList.appendChild(card);
+      });
+    }
+    
+    function addUser() 
+    {
+      const nameInput = document.getElementById("name");
+      const ageInput = document.getElementById("age");
+      const professionInput = document.getElementById("professionInput");
+      
+      const name = nameInput.value;
+      const age = ageInput.value;
+      const profession = professionInput.value;
+      
+      if (name && age && profession) 
+      {
+        const id = users.length + 1;
+        const newUser = { id, name, age, profession };
+        users.push(newUser);
+        renderUsers();
+        
+        nameInput.value = "";
+        ageInput.value = "";
+        professionInput.value = "";
+      }
+    }
+    
+    renderUsers();
+  </script>
+</body>
+</html>
